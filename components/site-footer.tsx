@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowIcon } from "@/components/arrow-icon";
 
 export function SiteFooter() {
   return (
@@ -9,7 +10,7 @@ export function SiteFooter() {
         <nav aria-label="Footer">
           <Link href="/download">Downloads</Link>
           <Link href="/feedback">Feedback</Link>
-          <a href="https://github.com/Sampath0411/glance-windows" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a href="https://github.com/Sampath0411/glance-windows" target="_blank" rel="noreferrer">GitHub <ArrowIcon direction="up-right" /></a>
         </nav>
       </div>
     </footer>

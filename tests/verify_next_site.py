@@ -347,6 +347,7 @@ class NextSiteBrowserTests(unittest.TestCase):
             hero_icon = page.locator(".hero__brand-icon")
             self.assertGreater(brand_icon.count(), 0)
             self.assertGreater(hero_icon.count(), 0)
+            page.wait_for_function("[...document.querySelectorAll('.brand img, .hero__brand-icon')].every(icon => icon.complete && icon.naturalWidth > 0)")
             for icon in (brand_icon, hero_icon):
                 icon_src = icon.get_attribute("src")
                 if icon_src.startswith("/_next/image?"):
@@ -382,6 +383,14 @@ class NextSiteBrowserTests(unittest.TestCase):
                 self.assertNotIn("↗", page.locator("body").text_content() or "", route)
                 self.assertGreater(page.locator('a:visible svg.arrow-icon[aria-hidden="true"]').count(), 0, route)
             page.goto(BASE_URL, wait_until="domcontentloaded")
+            expected_paths = (
+                (".hero__actions .button-primary", "M12 4v15m-6-6 6 6 6-6"),
+                (".hero__actions .quiet-link", "M7 17 17 7M8 7h9v9"),
+                (".info-card--wide .quiet-link", "M5 12h14m-6-6 6 6-6 6"),
+            )
+            for control, expected_path in expected_paths:
+                with self.subTest(control=control):
+                    self.assertEqual(page.locator(f"{control} svg.arrow-icon path").get_attribute("d"), expected_path)
             cta = page.locator(".hero__actions a.button-primary")
             self.assertTrue(cta.is_visible())
             arrow = cta.locator("svg.arrow-icon")

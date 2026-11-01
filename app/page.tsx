@@ -6,6 +6,8 @@ import GradientASCII from "@/components/react-bits/gradient-ascii";
 import TechText from "@/components/react-bits/tech-text";
 import Shuffle from "@/components/react-bits/shuffle";
 import type { Metadata } from "next";
+import Image from "next/image";
+import { ArrowIcon } from "@/components/arrow-icon";
 
 export const metadata: Metadata = {
   title: "Face Unlock for Windows",
@@ -37,6 +39,7 @@ export default function HomePage() {
           />
         </div>
         <div className="hero__content shell-page">
+        <Image className="hero__brand-icon" src="/assets/icon.png" width={48} height={48} alt="" loading="eager" />
         <p className="eyebrow">Made for your Windows PC</p>
         <h1 id="hero-title" className="visually-hidden">Face unlock, made simple.</h1>
         <div className="hero__title-visual" aria-hidden="true">
@@ -45,8 +48,8 @@ export default function HomePage() {
         </div>
         <p className="hero__subhead"><BlurText text="Private, on-device face recognition for your Windows PC." className="blur-text__content" animateBy="words" direction="top" delay={90} stepDuration={0.45} blur={6} distance={14} effect="blur" trigger="view" /></p>
         <div className="hero__actions">
-          <a className="button-primary" href="https://github.com/Sampath0411/glance-windows/releases/download/v0.1.7/GlanceSetup.exe">Download for Windows <span aria-hidden="true">↓</span></a>
-          <a className="quiet-link" href="https://github.com/Sampath0411/glance-windows/releases/tag/v0.1.7" target="_blank" rel="noreferrer">v0.1.7 release notes ↗</a>
+          <a className="button-primary" href="https://github.com/Sampath0411/glance-windows/releases/download/v0.1.7/GlanceSetup.exe">Download for Windows <ArrowIcon direction="down" /></a>
+          <a className="quiet-link" href="https://github.com/Sampath0411/glance-windows/releases/tag/v0.1.7" target="_blank" rel="noreferrer">v0.1.7 release notes <ArrowIcon direction="up-right" /></a>
         </div>
         <div className="hero__glow" aria-hidden="true" />
         <DemoVideo />
@@ -64,7 +67,7 @@ export default function HomePage() {
             <span className="card-index">02 / CONTROL</span><h3>Designed for convenience</h3><p>Use your webcam for a quicker sign-in flow, with Windows password and PIN options still available.</p>
           </SpotlightCard>
           <SpotlightCard className="info-card info-card--wide" spotlightColor="#66c8ff" intensity={0.2} spotlightSize={260} softness={0.72} borderGlow={0.24} proximity={0} smoothing={0.3} ambient={false} flare={false} grain={0}>
-            <span className="card-index">03 / HONEST SECURITY</span><h3>Convenient is not the same as high assurance.</h3><p>Glance is less secure than Windows Hello. Most PCs lack the depth sensors that help Windows Hello verify a person.</p><a className="quiet-link" href="/download">Read the installation and security notes →</a>
+            <span className="card-index">03 / HONEST SECURITY</span><h3>Convenient is not the same as high assurance.</h3><p>Glance is less secure than Windows Hello. Most PCs lack the depth sensors that help Windows Hello verify a person.</p><a className="quiet-link" href="/download">Read the installation and security notes <ArrowIcon direction="right" /></a>
           </SpotlightCard>
         </div>
         </AnimatedContent>
@@ -74,11 +77,11 @@ export default function HomePage() {
         <p className="eyebrow">Know the limits</p>
         <h2 id="limits-heading"><Shuffle text="A head-turn check is not liveness proof." className="shuffle-heading" tag="span" textAlign="left" effect="flip" shuffleDirection="up" duration={0.42} shuffleTimes={2} animationMode="center" stagger={0.02} triggerOnce triggerOnHover respectReducedMotion /></h2>
         <p>When prompted, face forward → turn left → turn right → face forward. This RGB head-motion check is not proof of a live person; moved photos or replay videos may still pass.</p>
-        <a className="button-secondary" href="/download">Review all product and install details <span aria-hidden="true">↗</span></a>
+        <a className="button-secondary" href="/download">Review all product and install details <ArrowIcon direction="up-right" /></a>
       </section>
       </AnimatedContent>
       <AnimatedContent className="animated-content" distance={28} duration={0.75} ease="power3.out" initialOpacity={0.82} blur={4} threshold={0.12} trigger="scroll" once>
-       <section className="closing-cta shell-page"><p className="eyebrow">Glance for Windows 11</p><h2><Shuffle text="Ready when you are." className="shuffle-heading" tag="span" effect="slide" shuffleDirection="right" duration={0.38} shuffleTimes={2} animationMode="evenodd" stagger={0.025} triggerOnce triggerOnHover respectReducedMotion /></h2><a className="button-primary" href="/download">Get Glance <span aria-hidden="true">↓</span></a></section>
+       <section className="closing-cta shell-page"><p className="eyebrow">Glance for Windows 11</p><h2><Shuffle text="Ready when you are." className="shuffle-heading" tag="span" effect="slide" shuffleDirection="right" duration={0.38} shuffleTimes={2} animationMode="evenodd" stagger={0.025} triggerOnce triggerOnHover respectReducedMotion /></h2><a className="button-primary" href="/download">Get Glance <ArrowIcon direction="down" /></a></section>
       </AnimatedContent>
     </main>
   );

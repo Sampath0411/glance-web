@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import AnimatedContent from "@/components/react-bits/animated-content";
 import GradientWaves from "@/components/react-bits/gradient-waves";
 import Shuffle from "@/components/react-bits/shuffle";
+import { ArrowIcon } from "@/components/arrow-icon";
 
 export const metadata: Metadata = {
   title: "Feedback",
@@ -17,7 +18,7 @@ export default function FeedbackPage() {
           <p className="eyebrow">Help make Glance better</p>
           <h1><Shuffle text="Feedback" className="shuffle-heading" tag="span" effect="slide" shuffleDirection="right" duration={0.42} shuffleTimes={2} animationMode="center" stagger={0.045} triggerOnce triggerOnHover respectReducedMotion /></h1>
           <p>Report a bug, request a feature, or share your thoughts with the Glance community.</p>
-          <a className="button-primary" href="https://github.com/Sampath0411/glance-windows/issues" target="_blank" rel="noreferrer">Open GitHub Issues <span aria-hidden="true">↗</span></a>
+          <a className="button-primary" href="https://github.com/Sampath0411/glance-windows/issues" target="_blank" rel="noreferrer">Open GitHub Issues <ArrowIcon direction="up-right" /></a>
         </section>
       </AnimatedContent>
     </main>
