@@ -8,7 +8,7 @@ Refresh the Glance homepage hero with the user-selected React Bits `GradientASCI
 
 ## Approved direction and scope
 
-- Keep the marketing site focused; “use all” means use the selected and relevant React Bits components, not every library demo on the homepage. Retain existing purposeful uses of BlurText, SpotlightCard, and AnimatedContent in their current sections.
+- Keep the marketing site focused; “use all” means use the selected and relevant React Bits components, not every library demo on the homepage. Keep SpotlightCard and AnimatedContent in their current sections; move BlurText from the replaced hero headline to the closing CTA heading so it remains a purposeful part of the site.
 - Replace Aurora as the hero background with GradientASCII, using a restrained blue/cyan palette. Keep the existing dark CSS gradient beneath it as the no-WebGL fallback. Limit the effect to the hero, keep it decorative and non-interactive, and cap rendering cost.
 - Render “Face unlock, made simple.” as the full TechText hero headline (visual option A). Use settings that do not require pointer interaction, dragging, click effects, or idle sweeping. Keep an accessible and visible static-text fallback until the canvas is ready, and honor reduced-motion preferences.
 - Preserve the current page content, release links, disclosures, and site structure. Do not add a library showcase page or import unrelated React Bits components.
