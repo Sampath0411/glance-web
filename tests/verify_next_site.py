@@ -241,6 +241,26 @@ class NextSiteBrowserTests(unittest.TestCase):
             context.close()
             browser.close()
 
+    def test_full_bleed_hero_compact_navigation_and_luminous_cards(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 800})
+            page.goto(BASE_URL, wait_until="domcontentloaded")
+
+            background = page.locator(".hero__gradient-ascii")
+            bounds = background.evaluate("el => { const r = el.getBoundingClientRect(); return { left: r.left, width: r.width, height: r.height }; }")
+            self.assertLessEqual(abs(bounds["left"]), 1)
+            self.assertGreaterEqual(bounds["width"], 1278)
+            self.assertGreaterEqual(bounds["height"], 798)
+
+            card = page.locator(".info-card").first
+            self.assertTrue(card.is_visible())
+            card_style = card.evaluate("el => { const s = getComputedStyle(el); return { border: s.borderTopColor, shadow: s.boxShadow }; }")
+            self.assertNotEqual(card_style["border"], "rgba(0, 0, 0, 0)")
+            self.assertNotEqual(card_style["shadow"], "none")
+            self.assertIn("spotlight-card", card.get_attribute("class"))
+            browser.close()
+
     def test_react_bits_motion_is_present_on_every_route(self):
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
