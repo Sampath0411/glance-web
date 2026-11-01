@@ -59,7 +59,12 @@ class NextSiteBrowserTests(unittest.TestCase):
             for route, heading in (("/", "Face unlock"), ("/download", "Glance releases"), ("/feedback", "Feedback")):
                 response = page.goto(BASE_URL + route)
                 self.assertEqual(response.status, 200)
-                self.assertIn(heading.lower(), page.locator("h1").inner_text().lower())
+                h1 = page.locator("h1")
+                shuffle_heading = h1.locator(".shuffle-parent")
+                if shuffle_heading.count():
+                    page.wait_for_function("el => !!el.getAttribute('aria-label')", arg=shuffle_heading.element_handle())
+                rendered_heading = h1.get_attribute("aria-label") or (shuffle_heading.get_attribute("aria-label") if shuffle_heading.count() else None) or h1.inner_text()
+                self.assertIn(heading.lower(), rendered_heading.lower())
                 self.assertTrue(page.get_by_role("navigation", name="Primary").is_visible())
                 self.assertTrue(page.get_by_role("link", name="Skip to content").count())
             browser.close()
@@ -176,7 +181,7 @@ class NextSiteBrowserTests(unittest.TestCase):
             self.assertIsNone(video.get_attribute("autoplay"))
             self.assertEqual(video.get_attribute("preload"), "metadata")
             page.goto(BASE_URL + "/download")
-            details = page.locator("main").inner_text().lower()
+            details = (page.locator("main").text_content() or "").lower()
             self.assertIn("bundled", details)
             self.assertIn("for windows to verify", details)
             self.assertIn("does not save it", details)
@@ -202,10 +207,13 @@ class NextSiteBrowserTests(unittest.TestCase):
             page = browser.new_page(viewport={"width": 1440, "height": 1000})
             page.goto(BASE_URL)
             page.wait_for_timeout(1200)
-            self.assertTrue(page.locator(".aurora-container canvas").count())
+            self.assertTrue(page.locator(".gradient-ascii-container canvas").count())
+            self.assertTrue(page.locator(".tech-text-canvas").count())
             self.assertGreaterEqual(page.locator(".spotlight-card").count(), 3)
             self.assertGreaterEqual(page.locator(".animated-content").count(), 2)
-            self.assertIn("Face unlock", page.locator("h1").inner_text())
+            hero_heading = page.locator("#hero-title")
+            self.assertIn("Face unlock", hero_heading.inner_text())
+            self.assertIn("made simple", hero_heading.inner_text())
             first_card = page.locator(".spotlight-card").first
             first_card.scroll_into_view_if_needed()
             box = first_card.bounding_box()
@@ -226,10 +234,103 @@ class NextSiteBrowserTests(unittest.TestCase):
             page = context.new_page()
             page.goto(BASE_URL)
             self.assertIn("Face unlock", page.locator("h1").inner_text())
+            self.assertTrue(page.locator(".tech-text-fallback").first.is_visible())
             self.assertTrue(page.locator(".animated-content").first.is_visible())
             self.assertTrue(page.get_by_role("heading", name="A head-turn check is not liveness proof.").is_visible())
             self.assertTrue(page.locator(".info-card--wide").is_visible())
             context.close()
+            browser.close()
+
+    def test_react_bits_motion_is_present_on_every_route(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": 1365, "height": 900})
+            for route in ("/", "/download", "/feedback"):
+                page.goto(BASE_URL + route, wait_until="domcontentloaded")
+                self.assertGreater(page.locator(".shuffle-parent").count(), 0, route)
+                self.assertGreater(page.locator(".animated-content").count(), 0, route)
+                page.wait_for_function("getComputedStyle(document.querySelector('h1')).visibility === 'visible'")
+                self.assertTrue(page.locator("h1").is_visible(), route)
+                self.assertLessEqual(page.locator("body").evaluate("el => el.scrollWidth"), 1365, route)
+                if route != "/":
+                    self.assertTrue(page.locator(".gradient-waves-container").count(), route)
+            browser.close()
+
+    def test_floating_glass_navigation_and_dark_hero_contrast(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(BASE_URL)
+            header = page.locator(".site-header")
+            styles = header.evaluate("""el => {
+                const css = getComputedStyle(el);
+                return {
+                    position: css.position,
+                    top: css.top,
+                    radius: parseFloat(css.borderTopLeftRadius),
+                    background: css.backgroundColor,
+                    blur: css.backdropFilter,
+                    width: el.getBoundingClientRect().width
+                };
+            }""")
+            self.assertEqual(styles["position"], "fixed")
+            self.assertGreaterEqual(styles["radius"], 24)
+            self.assertIn("blur(", styles["blur"])
+            self.assertTrue(styles["background"].startswith("rgba("))
+            self.assertLess(styles["width"], 1280)
+            self.assertEqual(page.locator("body").evaluate("el => getComputedStyle(el).backgroundColor"), "rgb(16, 17, 19)")
+            self.assertEqual(page.locator("#hero-title").evaluate("el => getComputedStyle(el).color"), "rgb(240, 241, 243)")
+            page.set_viewport_size({"width": 320, "height": 740})
+            self.assertLessEqual(page.locator("body").evaluate("el => el.scrollWidth"), 320)
+            self.assertTrue(page.get_by_role("navigation", name="Primary").is_visible())
+            browser.close()
+
+    def test_extension_injected_root_attribute_does_not_crash_production_hydration(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page()
+            errors = []
+            page.add_init_script("""(() => {
+                const inject = () => document.documentElement?.setAttribute('data-dex-recorder-ready', 'true');
+                if (document.documentElement) inject();
+                else {
+                    const observer = new MutationObserver(() => {
+                        if (document.documentElement) {
+                            inject();
+                            observer.disconnect();
+                        }
+                    });
+                    observer.observe(document, { childList: true, subtree: true });
+                }
+            })();""")
+            page.on("pageerror", lambda error: errors.append(str(error)))
+            page.on("console", lambda message: errors.append(message.text) if message.type == "error" else None)
+            response = page.goto(BASE_URL)
+            self.assertEqual(response.status, 200)
+            self.assertEqual(page.locator("html").get_attribute("data-dex-recorder-ready"), "true")
+            page.wait_for_timeout(400)
+            self.assertEqual(errors, [])
+            browser.close()
+
+    def test_gradient_ascii_webgl_fallback(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page()
+            page.add_init_script("""
+                const originalGetContext = HTMLCanvasElement.prototype.getContext;
+                HTMLCanvasElement.prototype.getContext = function (type, ...args) {
+                    if (type === 'webgl2') return null;
+                    return originalGetContext.call(this, type, ...args);
+                };
+            """)
+            page_errors = []
+            page.on("pageerror", lambda error: page_errors.append(str(error)))
+            response = page.goto(BASE_URL)
+            self.assertEqual(response.status, 200)
+            self.assertTrue(page.locator(".gradient-ascii-container canvas").count())
+            background = page.locator(".hero__gradient-ascii").evaluate("el => getComputedStyle(el).backgroundImage")
+            self.assertIn("radial-gradient", background)
+            self.assertEqual(page_errors, [])
             browser.close()
 
     def test_no_uncaught_errors_or_failed_local_assets(self):

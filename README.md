@@ -49,7 +49,7 @@ Glance is less secure than Windows Hello. Its RGB head-motion challenge asks the
 
 Static files live under `public/assets/`. The optimized product demo is `public/assets/demo/glance-demo.mp4`; it is user-started, uses native controls, and preloads metadata only. The site has no analytics, tracking pixels, feedback backend, or data-collection form.
 
-The homepage uses official React Bits `Aurora`, `BlurText`, `SpotlightCard`, and `AnimatedContent` components. Their pinned source revision and full license are documented in `THIRD_PARTY_NOTICES.md`. Effects have no-JavaScript/reduced-motion fallbacks; no external React Bits runtime is loaded.
+The site uses official React Bits `GradientASCII` and `TechText` in the home hero, `Shuffle` on key headings, `GradientWaves` on secondary pages, and `BlurText`, `SpotlightCard`, and `AnimatedContent` for supporting motion and interactive cards. Source revision and license details are documented in `THIRD_PARTY_NOTICES.md`. Text remains readable without JavaScript and animations respect reduced-motion settings; no external React Bits runtime is loaded.
 
 Set `NEXT_PUBLIC_SITE_URL` to the eventual canonical production origin (for example, the custom domain after it is chosen). Vercel's `VERCEL_URL` is used as a fallback when available. Without a configured origin, no sitemap entries are emitted and no placeholder canonical domain is published.
 

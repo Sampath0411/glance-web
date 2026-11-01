@@ -8,6 +8,11 @@ The following source components are adapted from [React Bits](https://reactbits.
 - [SpotlightCard](https://github.com/DavidHDev/react-bits/blob/4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4/src/ts-default/Components/SpotlightCard/SpotlightCard.tsx)
 - [Aurora](https://github.com/DavidHDev/react-bits/blob/4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4/src/ts-default/Backgrounds/Aurora/Aurora.tsx)
 - [AnimatedContent](https://github.com/DavidHDev/react-bits/blob/4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4/src/ts-default/Animations/AnimatedContent/AnimatedContent.tsx)
+- [GradientASCII](https://github.com/DavidHDev/react-bits/blob/4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4/src/ts-default/Backgrounds/GradientASCII/GradientASCII.tsx)
+- [TechText](https://github.com/DavidHDev/react-bits/blob/4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4/src/ts-default/TextAnimations/TechText/TechText.tsx)
+- [Shuffle](https://github.com/DavidHDev/react-bits/blob/4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4/src/content/TextAnimations/Shuffle/Shuffle.jsx)
+- [GradientWaves](https://github.com/DavidHDev/react-bits/blob/4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4/src/content/Backgrounds/GradientWaves/GradientWaves.jsx)
+- Component pages: [Gradient ASCII](https://reactbits.dev/backgrounds/gradient-ascii), [Tech Text](https://reactbits.dev/text-animations/tech-text), [Shuffle](https://reactbits.dev/text-animations/shuffle), [Gradient Waves](https://reactbits.dev/backgrounds/gradient-waves).
 
 Copyright (c) 2026 David Haz
 
