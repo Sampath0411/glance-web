@@ -26,7 +26,7 @@ The browser test suite requires Playwright for Python and an installed Chromium 
 
 ## Routes
 
-- `/` — centered product introduction, direct installer link, user-started demo, feature highlights, and liveness/security disclosures.
+- `/` — centered product introduction, direct installer link, muted looping demo with a pause/play control, feature highlights, and liveness/security disclosures.
 - `/download` — GitHub release browser, stable v0.1.7 fallback, release notes, install requirements, security notices, demo, and checksum.
 - `/feedback` — links directly to GitHub Issues. There is no fake submission form or local collection of user data.
 - `/download.html` and `/feedback.html` — permanent redirects to the clean routes.
@@ -47,7 +47,7 @@ Glance is less secure than Windows Hello. Its RGB head-motion challenge asks the
 
 ## Assets, privacy, and metadata
 
-Static files live under `public/assets/`. The optimized product demo is `public/assets/demo/glance-demo.mp4`; it is user-started, uses native controls, and preloads metadata only. The site has no analytics, tracking pixels, feedback backend, or data-collection form.
+Static files live under `public/assets/`. The optimized product demo is `public/assets/demo/glance-demo.mp4`; it autoplays muted and loops with a single pause/play control, starts paused when reduced motion is preferred, and preloads metadata only. The site has no analytics, tracking pixels, feedback backend, or data-collection form.
 
 The site uses official React Bits `GradientASCII` and `TechText` in the home hero, `Shuffle` on key headings, `GradientWaves` on secondary pages, and `BlurText`, `SpotlightCard`, and `AnimatedContent` for supporting motion and interactive cards. Source revision and license details are documented in `THIRD_PARTY_NOTICES.md`. Text remains readable without JavaScript and animations respect reduced-motion settings; no external React Bits runtime is loaded.
 
