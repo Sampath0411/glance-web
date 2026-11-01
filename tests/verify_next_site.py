@@ -254,6 +254,27 @@ class NextSiteBrowserTests(unittest.TestCase):
             self.assertGreaterEqual(bounds["height"], 798)
             browser.close()
 
+    def test_site_header_is_compact_on_desktop_and_mobile(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 800})
+            page.goto(BASE_URL, wait_until="domcontentloaded")
+            header_height = page.locator(".site-header__inner").evaluate("el => el.getBoundingClientRect().height")
+            self.assertLessEqual(header_height, 58)
+            primary_nav = page.locator(".primary-nav")
+            for name in ("Product", "Download", "Feedback"):
+                self.assertTrue(primary_nav.get_by_role("link", name=name, exact=True).is_visible(), name)
+            self.assertTrue(page.locator(".site-header").get_by_role("link", name="Get Glance", exact=True).is_visible())
+
+            page.set_viewport_size({"width": 390, "height": 844})
+            page.reload()
+            mobile_header_height = page.locator(".site-header__inner").evaluate("el => el.getBoundingClientRect().height")
+            self.assertLessEqual(mobile_header_height, 52)
+            primary_nav = page.locator(".primary-nav")
+            for name in ("Product", "Download", "Feedback"):
+                self.assertTrue(primary_nav.get_by_role("link", name=name, exact=True).is_visible(), name)
+            browser.close()
+
     def test_react_bits_motion_is_present_on_every_route(self):
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
