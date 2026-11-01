@@ -275,6 +275,23 @@ class NextSiteBrowserTests(unittest.TestCase):
                 self.assertTrue(primary_nav.get_by_role("link", name=name, exact=True).is_visible(), name)
             browser.close()
 
+    def test_feature_cards_use_luminous_glass_surfaces(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 800})
+            page.goto(BASE_URL, wait_until="domcontentloaded")
+            card = page.locator(".info-card").first
+            card.evaluate("el => el.scrollIntoView({ block: 'center' })")
+            page.wait_for_function("el => getComputedStyle(el).visibility === 'visible'", arg=card.element_handle())
+            self.assertIn("spotlight-card", card.get_attribute("class"))
+            self.assertTrue(card.locator("h3").is_visible())
+            self.assertTrue(card.locator("p").is_visible())
+            style = card.evaluate("el => { const s = getComputedStyle(el); return { border: s.borderTopColor, shadow: s.boxShadow, background: s.backgroundImage }; }")
+            self.assertIn("99, 188, 255", style["border"])
+            self.assertNotEqual(style["shadow"], "none")
+            self.assertIn("linear-gradient", style["background"])
+            browser.close()
+
     def test_react_bits_motion_is_present_on_every_route(self):
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()

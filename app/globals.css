@@ -63,7 +63,8 @@ main { min-height: 60vh; }
 .content-section h2, .disclosure h2, .closing-cta h2 { margin: 0; font-size: clamp(42px, 7vw, 78px); font-weight: 560; line-height: 1.02; letter-spacing: -.065em; }
 .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 48px; }
 .info-card { min-height: 230px; padding: clamp(24px, 4vw, 38px); border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, #1a1c20, #141518); }
-.spotlight-card.info-card { min-height: 230px; padding: clamp(24px, 4vw, 38px); border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, #1a1c20, #141518); }
+.spotlight-card.info-card { min-height: 230px; padding: clamp(24px, 4vw, 38px); border: 1px solid rgb(99 188 255 / 30%); border-radius: 18px; background: linear-gradient(145deg, rgb(24 52 77 / 88%), rgb(18 24 33 / 94%)); box-shadow: 0 22px 58px -26px rgb(0 0 0 / 78%), inset 0 1px 0 rgb(216 245 255 / 12%), 0 0 28px rgb(36 155 229 / 10%); -webkit-backdrop-filter: blur(16px) saturate(125%); backdrop-filter: blur(16px) saturate(125%); transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease; }
+.spotlight-card.info-card:focus-within { border-color: rgb(99 188 255 / 58%); }
 .info-card--wide { grid-column: span 2; min-height: 0; }
 .spotlight-card.info-card--wide { grid-column: span 2; min-height: 0; }
 .animated-content { width: 100%; }
@@ -142,6 +143,10 @@ main { min-height: 60vh; }
   .primary-nav { gap: 9px; }
   .primary-nav a { font-size: 11px; }
 }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .spotlight-card.info-card:hover { transform: translateY(-4px); border-color: rgb(99 188 255 / 58%); box-shadow: 0 28px 66px -24px rgb(0 0 0 / 82%), inset 0 1px 0 rgb(216 245 255 / 18%), 0 0 34px rgb(36 155 229 / 18%); }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .spotlight-card.info-card:hover { transform: none; }
 }

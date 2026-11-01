@@ -57,13 +57,13 @@ export default function HomePage() {
         <h2 id="glance-heading"><Shuffle text="Your webcam. Your PC. Your choice." className="shuffle-heading" tag="span" textAlign="left" effect="slide" shuffleDirection="up" duration={0.35} shuffleTimes={2} animationMode="center" stagger={0.018} triggerOnce triggerOnHover respectReducedMotion /></h2>
         <AnimatedContent className="animated-content" distance={24} duration={0.65} ease="power3.out" initialOpacity={0.82} blur={3} threshold={0.14} trigger="scroll" once>
         <div className="feature-grid">
-          <SpotlightCard className="info-card" spotlightColor="#b8c8e5" intensity={0.12} spotlightSize={220} softness={0.78} borderGlow={0.12} proximity={0} smoothing={0.3} ambient={false} flare={false} grain={0}>
+          <SpotlightCard className="info-card" spotlightColor="#66c8ff" intensity={0.2} spotlightSize={240} softness={0.72} borderGlow={0.24} proximity={0} smoothing={0.3} ambient={false} flare={false} grain={0}>
             <span className="card-index">01 / LOCAL</span><h3>Runs on your device</h3><p>Face recognition runs locally on your Windows PC. Glance does not send face data to a cloud service.</p>
           </SpotlightCard>
-          <SpotlightCard className="info-card" spotlightColor="#b8c8e5" intensity={0.12} spotlightSize={220} softness={0.78} borderGlow={0.12} proximity={0} smoothing={0.3} ambient={false} flare={false} grain={0}>
+          <SpotlightCard className="info-card" spotlightColor="#66c8ff" intensity={0.2} spotlightSize={240} softness={0.72} borderGlow={0.24} proximity={0} smoothing={0.3} ambient={false} flare={false} grain={0}>
             <span className="card-index">02 / CONTROL</span><h3>Designed for convenience</h3><p>Use your webcam for a quicker sign-in flow, with Windows password and PIN options still available.</p>
           </SpotlightCard>
-          <SpotlightCard className="info-card info-card--wide" spotlightColor="#b8c8e5" intensity={0.12} spotlightSize={260} softness={0.78} borderGlow={0.12} proximity={0} smoothing={0.3} ambient={false} flare={false} grain={0}>
+          <SpotlightCard className="info-card info-card--wide" spotlightColor="#66c8ff" intensity={0.2} spotlightSize={260} softness={0.72} borderGlow={0.24} proximity={0} smoothing={0.3} ambient={false} flare={false} grain={0}>
             <span className="card-index">03 / HONEST SECURITY</span><h3>Convenient is not the same as high assurance.</h3><p>Glance is less secure than Windows Hello. Most PCs lack the depth sensors that help Windows Hello verify a person.</p><a className="quiet-link" href="/download">Read the installation and security notes →</a>
           </SpotlightCard>
         </div>
