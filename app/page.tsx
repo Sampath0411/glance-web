@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main id="main-content">
-      <section className="hero shell-page" aria-labelledby="hero-title">
+      <section className="hero" aria-labelledby="hero-title">
         <div className="hero__gradient-ascii" aria-hidden="true">
           <GradientASCII
             colors={["#1e3fd8", "#dbeafe", "#a5d8ff", "#38bdf8"]}
@@ -36,6 +36,7 @@ export default function HomePage() {
             dpr={1.25}
           />
         </div>
+        <div className="hero__content shell-page">
         <p className="eyebrow">Made for your Windows PC</p>
         <h1 id="hero-title" className="visually-hidden">Face unlock, made simple.</h1>
         <div className="hero__title-visual" aria-hidden="true">
@@ -49,6 +50,7 @@ export default function HomePage() {
         </div>
         <div className="hero__glow" aria-hidden="true" />
         <DemoVideo />
+        </div>
       </section>
       <section className="content-section shell-page" aria-labelledby="glance-heading">
         <p className="eyebrow">A familiar way to sign in</p>

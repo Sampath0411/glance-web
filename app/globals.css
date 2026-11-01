@@ -42,8 +42,9 @@ main { min-height: 60vh; }
 .button-primary { display: inline-flex; align-items: center; gap: 14px; border-radius: 999px; padding: 15px 21px; background: var(--text); color: var(--bg); font-size: 14px; font-weight: 650; text-decoration: none; transition: transform 160ms ease, background 160ms ease; }
 .button-primary:hover { transform: translateY(-2px); background: #fff; }
 .button-primary span { font-size: 18px; }
-.hero { position: relative; isolation: isolate; overflow: clip; padding-top: clamp(104px, 15vh, 160px); text-align: center; background: #101113; color: #f0f1f3; }
-.hero__gradient-ascii { position: absolute; z-index: 0; top: -74px; left: 50%; width: min(1260px, 110vw); height: min(700px, 62vw); min-height: 420px; transform: translateX(-50%); overflow: hidden; pointer-events: none; background: radial-gradient(ellipse at 50% 28%, #80a9e778 0%, #4f83ca38 30%, #3a5e9520 56%, transparent 78%), linear-gradient(180deg, #131b2a 0%, transparent 84%); mask-image: linear-gradient(#000 0%, #000 58%, transparent 100%); }
+.hero { position: relative; isolation: isolate; overflow: clip; width: 100%; min-height: 100svh; padding-top: clamp(104px, 15vh, 160px); text-align: center; background: #101113; color: #f0f1f3; }
+.hero__content { position: relative; z-index: 1; width: var(--site-width); margin-inline: auto; }
+.hero__gradient-ascii { position: absolute; z-index: 0; top: 0; left: 0; width: 100%; height: max(100svh, 760px); min-height: 100svh; overflow: hidden; pointer-events: none; background: radial-gradient(ellipse at 50% 28%, #2465e8a8 0%, #1976d260 35%, #0c3d872b 66%, transparent 88%), linear-gradient(180deg, #102b4d 0%, #101113 96%); mask-image: linear-gradient(#000 0%, #000 60%, transparent 100%); }
 .hero__gradient-ascii .gradient-ascii-container { height: 100%; background: transparent; }
 .hero > :not(.hero__gradient-ascii) { position: relative; z-index: 1; }
 .hero__title-visual { position: relative; z-index: 1; width: min(100%, 1120px); margin: 0 auto; color: #f0f1f3; font-size: clamp(58px, 10vw, 112px); font-weight: 580; letter-spacing: -.08em; line-height: .94; }
@@ -124,7 +125,7 @@ main { min-height: 60vh; }
   .site-footer p { order: 3; width: 100%; margin: 0; }
   .site-footer nav { gap: 14px; }
   .hero { padding-top: 92px; }
-  .hero__gradient-ascii { top: -26px; width: 120vw; height: 570px; min-height: 0; }
+  .hero__gradient-ascii { height: max(100svh, 620px); min-height: 100svh; }
   .hero__title-visual { font-size: clamp(52px, 12.8vw, 80px); }
   .shuffle-heading { max-width: 100%; }
   .hero__actions { flex-direction: column; gap: 16px; }
