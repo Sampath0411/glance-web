@@ -128,7 +128,9 @@ class NextSiteBrowserTests(unittest.TestCase):
             response = page.goto(BASE_URL + "/download")
             self.assertEqual(response.status, 200)
             self.assertEqual(page.get_by_role("link", name="Download v0.1.7").get_attribute("href"), "https://github.com/Sampath0411/glance-windows/releases/download/v0.1.7/GlanceSetup.exe")
-            self.assertTrue(page.get_by_role("link", name="All GitHub releases ↗").is_visible())
+            releases_link = page.get_by_role("link", name="All GitHub releases", exact=True)
+            self.assertTrue(releases_link.is_visible())
+            self.assertGreater(releases_link.locator("svg.arrow-icon[aria-hidden='true']").count(), 0)
             browser.close()
             browser = playwright.chromium.launch()
             page = browser.new_page()
@@ -334,6 +336,62 @@ class NextSiteBrowserTests(unittest.TestCase):
             page.set_viewport_size({"width": 320, "height": 740})
             self.assertLessEqual(page.locator("body").evaluate("el => el.scrollWidth"), 320)
             self.assertTrue(page.get_by_role("navigation", name="Primary").is_visible())
+            browser.close()
+
+    def test_app_icon_and_hero_label_are_present_and_readable(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 800})
+            page.goto(BASE_URL, wait_until="domcontentloaded")
+            brand_icon = page.locator(".brand img")
+            hero_icon = page.locator(".hero__brand-icon")
+            self.assertGreater(brand_icon.count(), 0)
+            self.assertGreater(hero_icon.count(), 0)
+            for icon in (brand_icon, hero_icon):
+                icon_src = icon.get_attribute("src")
+                if icon_src.startswith("/_next/image?"):
+                    self.assertIn("icon.png", icon_src)
+                else:
+                    self.assertEqual(icon_src, "/assets/icon.png")
+                self.assertGreater(icon.evaluate("el => el.naturalWidth"), 0)
+            self.assertTrue(brand_icon.is_visible())
+            self.assertTrue(hero_icon.is_visible())
+            self.assertTrue(page.locator("link[rel='icon'][href='/assets/icon.png']").count())
+            eyebrow = page.locator(".hero .eyebrow")
+            self.assertEqual(eyebrow.inner_text(), "Made for your Windows PC")
+            style = eyebrow.evaluate("el => { const s = getComputedStyle(el); return { color: s.color, background: s.backgroundColor, fontSize: parseFloat(s.fontSize), radius: parseFloat(s.borderTopLeftRadius), height: el.getBoundingClientRect().height }; }")
+            self.assertGreaterEqual(style["fontSize"], 13)
+            self.assertNotEqual(style["background"], "rgba(0, 0, 0, 0)")
+            self.assertEqual(style["color"], "rgb(245, 252, 255)")
+            self.assertTrue(eyebrow.is_visible())
+            self.assertGreaterEqual(style["radius"], style["height"] / 2)
+            browser.close()
+
+    def test_action_arrows_are_decorative_svgs_with_interaction_motion(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 800})
+            for route in ("/", "/download", "/feedback"):
+                page.goto(BASE_URL + route, wait_until="domcontentloaded")
+                main_text = page.locator("main").inner_text().lower()
+                if route == "/":
+                    self.assertIn("face forward → turn left → turn right → face forward", main_text)
+                arrow_svgs = page.locator("svg.arrow-icon")
+                self.assertGreater(arrow_svgs.count(), 0, route)
+                self.assertTrue(all(value == "true" for value in arrow_svgs.evaluate_all("els => els.map(el => el.getAttribute('aria-hidden'))")), route)
+                self.assertNotIn("↗", page.locator("body").text_content() or "", route)
+                self.assertGreater(page.locator('a:visible svg.arrow-icon[aria-hidden="true"]').count(), 0, route)
+            page.goto(BASE_URL, wait_until="domcontentloaded")
+            cta = page.locator(".hero__actions a.button-primary")
+            self.assertTrue(cta.is_visible())
+            arrow = cta.locator("svg.arrow-icon")
+            self.assertTrue(arrow.is_visible())
+            cta.hover()
+            page.wait_for_function("el => { const t = getComputedStyle(el).transform; return t !== 'none' && t !== 'matrix(1, 0, 0, 1, 0, 0)'; }", arg=arrow.element_handle())
+            page.emulate_media(reduced_motion="reduce")
+            page.mouse.move(4, 4)
+            cta.hover()
+            page.wait_for_function("el => { const a = el.closest('a.button-primary'); const identity = t => t === 'none' || t === 'matrix(1, 0, 0, 1, 0, 0)'; return a?.matches(':hover') && identity(getComputedStyle(a).transform) && identity(getComputedStyle(el).transform); }", arg=arrow.element_handle())
             browser.close()
 
     def test_extension_injected_root_attribute_does_not_crash_production_hydration(self):
